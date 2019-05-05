@@ -1,44 +1,59 @@
-/*function Phone(brand, price, color, date) {
-  this.brand = brand;
-  this.price = price;
-  this.color = color;
-  this.date = date
-}
+document.addEventListener('DOMContentLoaded', function() {
+  function Column(name) {
+    var self = this;
 
-Phone.prototype.printInfo = function() {
-  console.log("The phone brand is " + this.brand + ", color is " + this.color + " and the price is " + this.price + "." + " Made in " + this.date);
-};
-
-const iPhone6S = new Phone("Apple", 2250, "silver", 2015);
-iPhone6S.printInfo();
-*/
-
-/////////// SELF /////////
-
-function Button(text) {
-  this.text = text || 'Hello';
-}
-
-Button.prototype = {
-
-  create: function() {
-    const self = this;
-
-    this.element = document. createElement('button');
-    this.element.innerText = this.text;
-    this.element.addEventListener('click', function() {
-      alert(self.text);
+    this.id = randomString();
+    this.name = name;
+    this.element = generateTemplate('column-template', {
+      name: this.name,
+      id: this.id
     });
-    document.body.appendChild(this.element);
+
+    this.element.querySelector('.column').addEventListener('click', function(event) {
+      if (event.target.classList.contains('btn-delete')) {
+        self.removeColumn();
+      }
+
+      if (event.target.classList.contains('add-card')) {
+        self.addCard(new Card(prompt("Enter the name of the card")));
+      }
+    });
   }
-}
 
-const btn1 = new Button('Hello');
-const btn2 = new Button('Hello1');
-const btn3 = new Button('Hello2');
-const btn4 = new Button('Random text');
+  const table = {
+    name: 'kanban',
+    element: < Node element >
+  }
 
-btn1.create();
-btn2.create();
-btn3.create();
-btn4.create();
+  const column = {
+    id: '12j82da20k',
+    name: 'todo',
+    element: < Node element > // for example document.createElement('div')
+  }
+
+  const card = {
+    id: '2kd8s958ka',
+    description: 'Create Kanban app',
+    color: 'green',
+    element: < Node element >
+  };
+
+  function randomString() {
+    var chars = '019ZWRxs5wXtWo5VA8SkAXQKC7uRn7aDtY79u8wDfTUuB38s1sQfaLh.109773641.109773641.109773641.109773641UVWXTZ';
+    var str = '';
+    for (var i = 0; i < 10; i++) {
+      str += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return str;
+  }
+
+  function generateTemplate(name, data, basicElement) {
+    var template = document.getElementById(name).innerHTML;
+    var element = document.createElement(basicElement || 'div');
+
+    Mustache.parse(template);
+    element.innerHTML = Mustache.render(template, data);
+
+    return element;
+  }
+});
