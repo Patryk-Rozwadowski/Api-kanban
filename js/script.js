@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
+
+  var board = {
+    name: 'Kanban Board',
+    addColumn: function(column) {
+      this.element.appendChild(column.element);
+      initSortable(column.id); //About this feature we will tell later
+    },
+    element: document.querySelector('#board .column-container')
+  };
+  document.querySelector('#board .create-column').addEventListener('click', function() {
+    var name = prompt('Enter a column name');
+    var column = new Column(name);
+    board.addColumn(column);
+  });
+
   function Column(name) {
     var self = this;
 
@@ -20,23 +35,38 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  const table = {
-    name: 'kanban',
-    element: < Node element >
-  }
-
-  const column = {
-    id: '12j82da20k',
-    name: 'todo',
-    element: < Node element > // for example document.createElement('div')
-  }
-
-  const card = {
-    id: '2kd8s958ka',
-    description: 'Create Kanban app',
-    color: 'green',
-    element: < Node element >
+  Column.prototype = {
+    addCard: function(card) {
+      this.element.querySelector('ul').appendChild(card.element);
+    },
+    removeColumn: function() {
+      this.element.parentNode.removeChild(this.element);
+    }
   };
+
+  function Card(description) {
+    var self = this;
+
+    this.id = randomString();
+    this.description = description;
+    this.element = generateTemplate('card-template', {
+      description: this.description
+    }, 'li');
+
+    this.element.querySelector('.card').addEventListener('click', function(event) {
+      event.stopPropagation();
+
+      if (event.target.classList.contains('btn-delete')) {
+        self.removeCard();
+      }
+    });
+  }
+
+  Card.prototype = {
+    removeCard: function() {
+      this.element.parentNode.removeChild(this.element);
+    }
+  }
 
   function randomString() {
     var chars = '019ZWRxs5wXtWo5VA8SkAXQKC7uRn7aDtY79u8wDfTUuB38s1sQfaLh.109773641.109773641.109773641.109773641UVWXTZ';
@@ -45,6 +75,14 @@ document.addEventListener('DOMContentLoaded', function() {
       str += chars[Math.floor(Math.random() * chars.length)];
     }
     return str;
+  }
+
+  function initSortable(id) {
+    var el = document.getElementById(id);
+    var sortable = Sortable.create(el, {
+      group: 'kanban',
+      sort: true
+    });
   }
 
   function generateTemplate(name, data, basicElement) {
@@ -56,4 +94,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     return element;
   }
+
+  // CREATING COLUMNS
+  var todoColumn = new Column('To do');
+  var doingColumn = new Column('Doing');
+  var doneColumn = new Column('Done');
+
+  // ADDING COLUMNS TO THE BOARD
+  board.addColumn(todoColumn);
+  board.addColumn(doingColumn);
+  board.addColumn(doneColumn);
+
+  // CREATING CARDS
+  var card1 = new Card('New task');
+  var card2 = new Card('Create kanban boards');
+
+  // ADDING CARDS TO COLUMNS
+  todoColumn.addCard(card1);
+  doingColumn.addCard(card2)
 });
