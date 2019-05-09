@@ -1,45 +1,60 @@
-function randomString() {
-    var chars = '019ZWRxs5wXtWo5VA8SkAXQKC7uRn7aDtY79u8wDfTUuB38s1sQfaLh.109773641.109773641.109773641.109773641.109773641.109773641.109773641.109773641.109773641.109773641.109773641.109773641UVWXTZ';
-    var str = '';
-    for (var i = 0; i < 10; i++) {
-      str += chars[Math.floor(Math.random() * chars.length)];
-    }
-    return str;
-  }
+var baseUrl = 'https://kodilla.com/pl/bootcamp-api';
+var myHeaders = {
+  'X-Client-Id': 'X-Client-Id',
+  'X-Auth-Token': 'X-Auth-Token'
+};
+var prefix = "https://cors-anywhere.herokuapp.com/";
 
-  function initSortable(id) {
-    var el = document.getElementById(id);
-    var sortable = Sortable.create(el, {
-      group: 'kanban',
-      sort: true
-    });
-  }
+fetch(prefix + baseUrl + '/board', {
+    headers: myHeaders
+  })
+  .then(function(resp) {
+    return resp.json();
+  })
+  .then(function(resp) {
+    setupColumns(resp.columns);
+  });
 
-  function generateTemplate(name, data, basicElement) {
-    var template = document.getElementById(name).innerHTML;
-    var element = document.createElement(basicElement || 'div');
+function setupColumns(columns) {
+  columns.forEach(function(column) {
+    var col = new Column(column.id, column.name);
+    board.addColumn(col);
+  });
+}
 
-    Mustache.parse(template);
-    element.innerHTML = Mustache.render(template, data);
+function initSortable(id) {
+  var el = document.getElementById(id);
+  var sortable = Sortable.create(el, {
+    group: 'kanban',
+    sort: true
+  });
+}
 
-    return element;
-  }
+function generateTemplate(name, data, basicElement) {
+  var template = document.getElementById(name).innerHTML;
+  var element = document.createElement(basicElement || 'div');
 
-  // CREATING COLUMNS
-  var todoColumn = new Column('To do');
-  var doingColumn = new Column('Doing');
-  var doneColumn = new Column('Done');
+  Mustache.parse(template);
+  element.innerHTML = Mustache.render(template, data);
 
-  // ADDING COLUMNS TO THE BOARD
-  board.addColumn(todoColumn);
-  board.addColumn(doingColumn);
-  board.addColumn(doneColumn);
+  return element;
+}
 
-  // CREATING CARDS
-  var card1 = new Card('New task');
-  var card2 = new Card('Create kanban boards');
-  var card3 = new Card('Make coffe');
-  // ADDING CARDS TO COLUMNS
-  todoColumn.addCard(card1);
-  doingColumn.addCard(card2)
-  doneColumn.addCard(card3);
+// CREATING COLUMNS
+var todoColumn = new Column('To do');
+var doingColumn = new Column('Doing');
+var doneColumn = new Column('Done');
+
+// ADDING COLUMNS TO THE BOARD
+board.addColumn(todoColumn);
+board.addColumn(doingColumn);
+board.addColumn(doneColumn);
+
+// CREATING CARDS
+var card1 = new Card('New task');
+var card2 = new Card('Create kanban boards');
+var card3 = new Card('Make coffe');
+// ADDING CARDS TO COLUMNS
+todoColumn.addCard(card1);
+doingColumn.addCard(card2)
+doneColumn.addCard(card3);
