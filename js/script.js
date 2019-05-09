@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#board .create-column').addEventListener('click', function() {
     var name = prompt('Enter a column name');
     var column = new Column(name);
+
     board.addColumn(column);
   });
 
@@ -18,14 +19,18 @@ document.addEventListener('DOMContentLoaded', function() {
     var self = this;
 
     this.id = randomString();
-    this.name = name;
+    if (name === '') {
+      this.name = 'Bez nazwy';
+    } else {
+      this.name = name;
+    }
     this.element = generateTemplate('column-template', {
       name: this.name,
       id: this.id
     });
 
     this.element.querySelector('.column').addEventListener('click', function(event) {
-      if (event.target.classList.contains('btn-delete')) {
+      if (event.target.classList.contains('icon-close')) {
         self.removeColumn();
       }
 
@@ -48,7 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
     var self = this;
 
     this.id = randomString();
-    this.description = description;
+    if (description === '') {
+      this.description = 'Bez nazwy';
+    } else {
+      this.description = description;
+    }
     this.element = generateTemplate('card-template', {
       description: this.description
     }, 'li');
@@ -56,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
     this.element.querySelector('.card').addEventListener('click', function(event) {
       event.stopPropagation();
 
-      if (event.target.classList.contains('btn-delete')) {
+      if (event.target.classList.contains('icon-close')) {
         self.removeCard();
       }
     });
@@ -108,8 +117,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // CREATING CARDS
   var card1 = new Card('New task');
   var card2 = new Card('Create kanban boards');
-
+  var card3 = new Card('Make coffe');
   // ADDING CARDS TO COLUMNS
   todoColumn.addCard(card1);
   doingColumn.addCard(card2)
+  doneColumn.addCard(card3);
 });

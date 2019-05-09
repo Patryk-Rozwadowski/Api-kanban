@@ -1,4 +1,137 @@
-.row {
-  display:flex;
+@mixin robotoFont {
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  margin: 0;
+  background-color: #222;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+}
+
+* {
+  box-sizing: border-box;
+  transition: all 300ms ease;
+}
+
+.ui-sortable {
+  min-height: 80px;
+}
+
+.icon-close {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  border: 0;
+  background-color: rgba(0,0,0,0);
+  font-size: 2em;
+  color: white;
+  transform: rotate(45deg);
+  transition: all 400ms ease-in;
+
+  &:hover {
+    cursor: pointer;
+    transform: rotate(405deg);
+  }
+}
+/* BOARD */
+.board {
+  text-align: center;
+}
+.board h1 {
+  margin-left: 8px;
+  @include robotoFont;
+  font-weight: 900;
+  color: #fff;
+  text-align: center;
+}
+
+.column-container {
+  display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+/* COLUMN */
+
+.column {
+  order: 1;
+  min-width: 300px;
+  border: 1px solid #fff;
+  margin-left: 25px;
+  list-style: none;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.column-add-card {
+  cursor: pointer;
+  text-decoration: underline;
+  margin: 5px 8px;
+  display: block;
+}
+
+.column-title {
+  @include robotoFont;
+  font-weight: 400;
+  text-align: center;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 20px;
+  color: #fff;
+}
+
+.column-card-list {
+  text-align: center;
+}
+/* STYLE KARTY */
+
+.card {
+  box-sizing: border-box;
+  display: block;
+  height: 60px;
+  margin-bottom: 5px;
+  padding: 4px;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-list {
+  padding: 0;
+}
+
+.card-description {
+  @include robotoFont;
+  font-weight: 300;
+  color: #fff;
+}
+
+.add-card,
+.create-column {
+  border: 1px solid #fff;
+  background-color: #222;
+  @include robotoFont;
+  color: #fff;
+  padding: 10px;
+  transition: all 300ms ease;
+  margin: 50px;
+  text-align: center;
+
+  &:hover {
+    color: #222;
+    background-color: #fff;
+    cursor: pointer;
+  }
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
 }
