@@ -39,22 +39,3 @@ function generateTemplate(name, data, basicElement) {
 
   return element;
 }
-
-// CREATING COLUMNS
-var todoColumn = new Column('To do');
-var doingColumn = new Column('Doing');
-var doneColumn = new Column('Done');
-
-// ADDING COLUMNS TO THE BOARD
-board.addColumn(todoColumn);
-board.addColumn(doingColumn);
-board.addColumn(doneColumn);
-
-// CREATING CARDS
-var card1 = new Card('New task');
-var card2 = new Card('Create kanban boards');
-var card3 = new Card('Make coffe');
-// ADDING CARDS TO COLUMNS
-todoColumn.addCard(card1);
-doingColumn.addCard(card2)
-doneColumn.addCard(card3);

@@ -15,14 +15,31 @@ function Column(id, name) {
     }
 
     if (event.target.classList.contains('add-card')) {
-      self.addCard(new Card(prompt("Enter the name of the card")));
+      var cardName = prompt("Enter the name of the card");
+      event.preventDefault();
+      var data = new FormData();
+      data.append('name', cardName);
+      data.append('bootcamp_kanban_column_id', self.id);
+
+      fetch(baseUrl + '/card', {
+          method: 'POST',
+          headers: myHeaders,
+          body: data,
+        })
+        .then(function(res) {
+          return res.json();
+        })
+        .then(function(resp) {
+          var card = new Card(resp.id, cardName);
+          self.addCard(card);
+        });
     }
   });
 }
 
 Column.prototype = {
   addCard: function(card) {
-    this.element.querySelector('ul').appendChild(card.element);
+    self.addCard(new Card(cardName));
   },
   removeColumn: function() {
     var self = this;
@@ -51,7 +68,3 @@ fetch(baseUrl + '/card', {
     var card = new Card(resp.id, cardName);
     self.addCard(card);
   });
-
-var data = new FormData();
-data.append('name', cardName);
-data.append('bootcamp_kanban_column_id', self.id);
