@@ -1,16 +1,11 @@
-function Card(description) {
+function Card(id, name) {
   var self = this;
 
-  this.id = randomString();
-  if (description === '') {
-    this.description = 'Bez nazwy';
-  } else {
-    this.description = description;
-  }
+  this.id = id;
+  this.name = name || 'No name given';
   this.element = generateTemplate('card-template', {
-    description: this.description
+    description: this.name
   }, 'li');
-
   this.element.querySelector('.card').addEventListener('click', function(event) {
     event.stopPropagation();
 
@@ -21,10 +16,10 @@ function Card(description) {
 }
 
 Card.prototype = {
+
   removeCard: function() {
     var self = this;
-
-    fetch(baseUrl + '/card/' + self.id, {
+    fetch(prefix + baseUrl + '/card/' + self.id, {
         method: 'DELETE',
         headers: myHeaders
       })
@@ -33,6 +28,6 @@ Card.prototype = {
       })
       .then(function(resp) {
         self.element.parentNode.removeChild(self.element);
-      })
+      });
   }
-}
+};
